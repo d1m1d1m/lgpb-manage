@@ -2,7 +2,8 @@ import { createContext, useRef, useState, type PropsWithChildren } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import Konva from "konva";
 
-interface LabelEditorContextType {
+interface LabelEditorContextType
+{
   stageRef : React.RefObject<Konva.Stage | null>,
   nodes    : any[],
   addNode  : (elmt : any) => void

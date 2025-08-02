@@ -4,15 +4,15 @@ import './index.css';
 import App from './App.tsx';
 import LabelEditorProvider from './contexts/LabelEditorContext.tsx';
 import SelectionProvider from './contexts/SelectionContext.tsx';
-import TransformerProvider from './contexts/TransformerContext.tsx';
+import TextEditionProvider from './contexts/TextEditionContext.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <LabelEditorProvider>
       <SelectionProvider>
-        <TransformerProvider>
+        <TextEditionProvider>
           <App />
-        </TransformerProvider>
+        </TextEditionProvider>
       </SelectionProvider>
     </LabelEditorProvider>
   </StrictMode>,

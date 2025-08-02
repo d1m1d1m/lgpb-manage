@@ -1,0 +1,73 @@
+{
+  "category": [
+    {
+      "id": 1,
+      "name" : "Frais",
+      "sub_category_id": 1
+    },
+    {
+      "id": 2,
+      "name" : "Vrac",
+      "sub_category_id": 2
+    }
+  ],
+  "sub_category": [
+    {
+      "id" : 1,
+      "items": [
+        { "id" : 1, "name": "Yaourts", "sub_sub_category" : 0 },
+        { "id" : 2, "name": "Desserts végétaux", "sub_sub_category" : 0 },
+        { "id" : 3, "name": "Fromages", "sub_sub_category" : 0 },
+        { "id" : 4, "name": "Crèmerie et oeufs", "sub_sub_category" : 0 },
+        { "id" : 5, "name": "Traiteur et traiteur végétal", "sub_sub_category" : 0 },
+        { "id" : 6, "name": "Santé & Bien-être", "sub_sub_category" : 0 }
+      ]
+    },
+    {
+      "id" : 2,
+      "items": [
+        { "id" : 1, "name": "Salé", "sub_sub_category" : 1 },
+        { "id" : 2, "name": "Sucré", "sub_sub_category" : 2 },
+        { "id" : 3, "name": "Hygiène", "sub_sub_category" : 3 },
+        { "id" : 4, "name": "Boissons", "sub_sub_category" : 4 }
+      ]
+    }
+  ],
+
+  "sub_sub_category": [
+    {
+      "id" : 1,
+      "items": [
+        { "id" : 1, "name": "Pâtes & Riz" },
+        { "id" : 2, "name": "Légumineuses & graines" },
+        { "id" : 3, "name": "Couscous & boulgours" },
+        { "id" : 4, "name": "Apéritifs" },
+        { "id" : 5, "name": "Épices & condiments" }
+      ]
+    },
+    {
+      "id" : 2,
+      "items": [
+        { "id" : 1, "name": "Fruits secs" },
+        { "id" : 2, "name": "Muesli, flocons & céréales" },
+        { "id" : 3, "name": "Biscuits" },
+        { "id" : 4, "name": "Sucres, chocolats et bonbons" },
+        { "id" : 5, "name": "Purées & pâtes à tartiner" }
+      ]
+    },
+    {
+      "id" : 3,
+      "items": [
+        { "id" : 1, "name": "Hygiène de la maison" },
+        { "id" : 2, "name": "Hygiène corporelle" }
+      ]
+    },
+    {
+      "id" : 4,
+      "items": [
+        { "id" : 1, "name": "Vins" },
+        { "id" : 2, "name": "Jus de fruits" }
+      ]
+    }
+  ]
+}

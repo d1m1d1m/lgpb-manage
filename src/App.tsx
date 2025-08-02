@@ -1,127 +1,203 @@
-import { useState } from "react";
-import { Layer, Rect, Stage, Text, Transformer } from "react-konva";
-import { v4 as uuidv4 } from 'uuid';
-import { useLabelEditor } from "./hooks/useLabelEditor";
-import { useSelection } from "./hooks/useSelection";
-import { useTransformer } from "./hooks/useTransformer";
-import Panel from "./Panel";
+import { HomeIcon } from "lucide-react";
+import AppLogo from "./assets/main_logo.svg";
+import categoriesData from "./mockdata/categories.json";
+import { useEffect, useState } from "react";
 
-export default function App() {
-  const { stageRef, nodes, addNode } = useLabelEditor();
-  const { layerRef, setTargetedNodeId } = useSelection();
-  const { transformerRef } = useTransformer();
+export default function App()
+{
+  const [category, setCategory] = useState<number>(0);
+  const [subCategory, setSubCategory] = useState<number>(0);
+  const [subSubCategory, setSubSubCategory] = useState<number>(0);
 
-  const [selectionRect, setSelectionRect] = useState<null | { x: number, y: number, width: number, height: number }>(null);
-  const [dragStartPos, setDragStartPos] = useState<null | { x: number, y: number }>(null);
+  useEffect(() => {
+    getSubCategories();
+  }, [category]);
 
-  return (
-    <div className="flex">
-      <div className="w-3/4">
-        <h2>Composants</h2>
+  useEffect(() => {
+    getSubSubCategories();
+  }, [subCategory]);
 
-        <ul>
-          {nodes.map((n) => (
-            <li key={n.attrs.id} onClick={() => setTargetedNodeId(n.attrs.id)}>{n.attrs.id}</li>
-          ))}
-        </ul>
-      </div>
+  function getSubCategories()
+  {
+    const subCategoryId = categoriesData.category.find(c => c.id === category)?.id;
+    const subItems = categoriesData.sub_category.find(sc => sc.id === subCategoryId)
 
-      <Stage
-        ref={stageRef}
-        className="border w-fit"
-        width={400}
-        height={400}
+    return subItems;
+  }
 
-        onClick={(e) => {
-          if(e.target === e.target.getStage()) {
-            setTargetedNodeId(null);
-          }
-        }}
+  function getSubSubCategories()
+  {
+    const subSubCategoryId = categoriesData.sub_sub_category.find(ssc => ssc.id === subCategory)?.id;
+    const subSubItems = categoriesData.sub_sub_category.find(ssc => ssc.id === subSubCategoryId)
 
-        onMouseDown={(e) => {
-          if (e.target === e.target.getStage()) {
-            const { x, y } = e.target.getStage().getPointerPosition()!;
-            setDragStartPos({ x, y });
-            setSelectionRect(null);
-          }
-        }}
+    return subSubItems;
+  }
 
-        onMouseMove={(e) => {
-          if (dragStartPos) {
-            const { x, y } = e.target.getStage()?.getPointerPosition()!;
-            const width = x - dragStartPos.x;
-            const height = y - dragStartPos.y;
+  return(
+    <div className="h-screen overflow-hidden flex">
+      <aside className="flex flex-col items-center w-24 border border-base-300">
+        <a className="w-full border-b border-b-base-300 p-4" href="/">
+          <img src={AppLogo} alt="" />
+        </a>
 
-            setSelectionRect({
-              x: dragStartPos.x,
-              y: dragStartPos.y,
-              width,
-              height
-            });
-          }
-        }}
+        <nav>
+          <ul>
+            <li>
+              <a href="#">
+                <HomeIcon color="#f18a23"/>
+              </a>
+            </li>
 
-        onMouseUp={() => {
-          if (selectionRect) {
-            const newNodeId = uuidv4();
+            <li>
+              <a href="#">
+                <HomeIcon color="#f18a23"/>
+              </a>
+            </li>
 
-            addNode({
-              attrs: {
-                id: newNodeId,
-                x: selectionRect.x,
-                y: selectionRect.y,
-                width: Math.abs(selectionRect.width),
-                height: Math.abs(selectionRect.height),
-                text: "Texte",
-                fontSize: 16,
-                fill: "#000",
-                draggable: true
-              }
-            });
+            <li>
+              <a href="#">
+                <HomeIcon color="#f18a23"/>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
 
-            setTargetedNodeId(newNodeId);
-          }
+      <div className="flex flex-col bg-base-100 w-full">
+        {/* <h2 className="px-1 font-bold text-xl mb-4">Création de produit</h2> */}
           
-          setSelectionRect(null);
-          setDragStartPos(null);
-        }}
-      >
-        <Layer ref={layerRef}>
-          <Rect
-            {...selectionRect}
-            stroke="blue"
-            dash={[4,2]}
-            dashOffset={12}
-          />
-
-          {nodes.map((elmt) => (
-            <Text
-              key={elmt.attrs.id}
-              scale={{x: 1, y: 1}}
-              onDragStart={() => setTargetedNodeId(elmt.attrs.id)}
-              onDragMove={(e) => e.target.setPosition({x: e.target.x(), y: e.target.y()})}
-              onClick={(e) => setTargetedNodeId(e.target.id())}
-              onTransform={(e) => {
-                const n = e.target;
-
-                n.width(n.width() * n.scaleX());
-                n.height(n.height() * n.scaleY());
-
-                n.scale({ x: 1, y: 1 });
-              }}
+        <div className="flex h-full gap-4 p-4">
+          <form className="flex flex-col gap-2 overflow-y-scroll -scroll-m-10 min-w-fit">
+            <fieldset className="h-full fieldset bg-[#fff5e3]/50 border-[#f18a23] rounded-box w-xs border px-4 py-2">
+              <legend className="fieldset-legend text-base text-[#f18a23] px-2">Identification</legend>
               
-              {...elmt.attrs}
-            />
-          ))}
+              <label className="fieldset">
+                <span className="label">EAN</span>
+                <input type="text" className="input input-sm uppercase" placeholder="978020137962" />
+              </label>
 
-          <Transformer
-            ref={transformerRef}
-            anchorSize={6}
-          />
-        </Layer>
-      </Stage>
+              <label className="fieldset">
+                <span className="label">Nom du produit</span>
+                <input type="text" className="input input-sm uppercase" placeholder="Jus d'orange" />
+              </label>
+              
+              <label className="fieldset">
+                <span className="label">Nom du produit (étiquette)</span>
+                <input type="text" className="input input-sm uppercase" placeholder="Jus d'orange 1l" />
+              </label>
+            </fieldset>
 
-      <Panel/>
+            <fieldset className="h-full fieldset bg-[#fff5e3]/50 border-[#f18a23] rounded-box w-xs border px-4 py-2">
+              <legend className="fieldset-legend text-base text-[#f18a23] px-2">Catégorisation</legend>
+              
+              <label className="fieldset">
+                  <span className="label">Catégorie</span>
+                  <select
+                    className="select select-sm"
+                    value={category}
+                    onChange={(e) => {
+                      setCategory(parseInt(e.target.value));
+                      setSubCategory(0);
+                    }}
+                  >
+                    <option value={0} disabled>Sélectionnez la catégorie</option>
+                    
+                    {categoriesData.category.map((c) => (
+                      <option key={c.id} value={c.id}>{c.name}</option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className="fieldset">
+                  <span className="label">Sous-catégorie</span>
+                  <select
+                    className="select select-sm"
+                    disabled={category === 0}
+                    value={subCategory}
+                    onChange={(e) => setSubCategory(parseInt(e.target.value))}
+                  >
+                    <option value={0} disabled>Sélectionnez la sous-catégorie</option>
+                    
+                    {getSubCategories()?.items.map((c) => (
+                      <option key={c.id} value={c.id}>{c.name}</option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className="fieldset">
+                  <span className="label">Sous-sous-catégorie</span>
+                  <select
+                    className="select select-sm"
+                    value={subSubCategory}
+                    disabled={subCategory === 0 || category === 0}
+                    onChange={(e) => setSubSubCategory(parseInt(e.target.value))}
+                  >
+                    <option disabled selected>Sélectionnez la Sous-sous-catégorie</option>
+
+                    {getSubSubCategories()?.items.map((c) => (
+                      <option key={c.id} value={c.id}>{c.name}</option>
+                    ))}
+                  </select>
+                </label>
+            </fieldset>
+
+            <fieldset className="h-full fieldset bg-[#fff5e3]/50 border-[#f18a23] rounded-box w-xs border px-4 py-2">
+              <legend className="fieldset-legend text-base text-[#f18a23] px-2">Fournisseur</legend>
+              
+              <label className="fieldset">
+                <span className="label">Fournisseur</span>
+                <select className="select select-sm">
+                  <option disabled selected>Sélectionnez le fournisseur</option>
+                  <option>Markal</option>
+                  <option>Senfas</option>
+                  <option>Ekibio</option>
+                  <option>Tera Viva</option>
+                  <option>HBO</option>
+                </select>
+              </label>
+
+              <label className="fieldset">
+                <span className="label">Marque</span>
+                <select className="select select-sm">
+                  <option disabled selected>Sélectionnez la marque</option>
+                  <option>Luce</option>
+                  <option>Priméal</option>
+                  <option>Quintesens</option>
+                  <option>Philia</option>
+                  <option>Natur'avenir</option>
+                </select>
+              </label>
+
+              <label className="fieldset">
+                <span className="label">Référence</span>
+                <input type="text" className="input input-sm uppercase" placeholder="1902555" />
+              </label>
+            </fieldset>
+          </form>
+
+          <div className="w-full h-full pt-4">
+            <div className="h-full tabs tabs-lift">
+              <input type="radio" name="my_tabs_3" className="tab" aria-label="Prix" defaultChecked/>
+              <div className="h-full tab-content bg-base-100 border-base-300 p-6">TODO : Définition de la TVA, des prix d'achat, des remises, de vente, promotions, etc</div>
+
+              <input type="radio" name="my_tabs_3" className="tab" aria-label="Stock"/>
+              <div className="h-full tab-content bg-base-100 border-base-300 p-6">TODO : Définition du colisage, du seuil d'alerte stocks et du grammage du produit etc</div>
+
+              <input type="radio" name="my_tabs_3" className="tab" aria-label="Étiquette"/>
+              <div className="h-full tab-content bg-base-100 border-base-300 p-6">TODO : Définition du layout de préférence de l'étiquette pour impression auto.</div>
+
+              <input type="radio" name="my_tabs_3" className="tab" aria-label="Stats"/>
+              <div className="h-full tab-content bg-base-100 border-base-300 p-6">TODO : Visualiser les performances de ventes du produits, les mouvements de stocks, etc</div>
+
+              <input type="radio" name="my_tabs_3" className="tab" aria-label="Drive" />
+              <div className="h-full tab-content bg-base-100 border-base-300 p-6">TODO : Ajouter les informations produits pour le drive : photos, descriptions, allergènes, etc</div>
+
+              <input type="radio" name="my_tabs_3" className="tab" aria-label="Paramètres"/>
+              <div className="h-full tab-content bg-base-100 border-base-300 p-6">TODO : Définir les paramètres de ventes du produit et la gestion des remises.</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  )
+  );
 }
