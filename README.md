@@ -1,1 +1,1 @@
-# Un outils pour me faciliter la tâches dans le magasin
+# LGPB MANAGER (FRONTEND) - Feuille de route

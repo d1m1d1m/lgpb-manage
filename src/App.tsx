@@ -1,203 +1,205 @@
-import { HomeIcon } from "lucide-react";
-import AppLogo from "./assets/main_logo.svg";
-import categoriesData from "./mockdata/categories.json";
-import { useEffect, useState } from "react";
+import { BarcodeIcon, ChartColumnIcon, MonitorIcon, PackageIcon, Settings2Icon, TruckIcon, UsersRoundIcon, WrenchIcon } from "lucide-react";
+import { useState } from "react";
 
 export default function App()
 {
-  const [category, setCategory] = useState<number>(0);
-  const [subCategory, setSubCategory] = useState<number>(0);
-  const [subSubCategory, setSubSubCategory] = useState<number>(0);
-
-  useEffect(() => {
-    getSubCategories();
-  }, [category]);
-
-  useEffect(() => {
-    getSubSubCategories();
-  }, [subCategory]);
-
-  function getSubCategories()
-  {
-    const subCategoryId = categoriesData.category.find(c => c.id === category)?.id;
-    const subItems = categoriesData.sub_category.find(sc => sc.id === subCategoryId)
-
-    return subItems;
-  }
-
-  function getSubSubCategories()
-  {
-    const subSubCategoryId = categoriesData.sub_sub_category.find(ssc => ssc.id === subCategory)?.id;
-    const subSubItems = categoriesData.sub_sub_category.find(ssc => ssc.id === subSubCategoryId)
-
-    return subSubItems;
-  }
+  const [searchedProduct, setSearchedProduct] = useState<any>(null);
 
   return(
-    <div className="h-screen overflow-hidden flex">
-      <aside className="flex flex-col items-center w-24 border border-base-300">
-        <a className="w-full border-b border-b-base-300 p-4" href="/">
-          <img src={AppLogo} alt="" />
-        </a>
+    <div className="h-screen flex">
+      <aside className="h-full border-r border-r-base-300 w-52">
+        <header className="flex justify-center items-center p-4 border-b border-b-base-300 h-20">
+          <img className="w-32" src="/mainLogo.png" alt="" />
+        </header>
 
-        <nav>
-          <ul>
-            <li>
-              <a href="#">
-                <HomeIcon color="#f18a23"/>
-              </a>
-            </li>
-
-            <li>
-              <a href="#">
-                <HomeIcon color="#f18a23"/>
-              </a>
-            </li>
-
-            <li>
-              <a href="#">
-                <HomeIcon color="#f18a23"/>
-              </a>
-            </li>
-          </ul>
-        </nav>
+        <ul className="menu w-full">
+          <li>
+            <details>
+              <summary>
+                <BarcodeIcon className="size-5"/>
+                Articles
+              </summary>
+              <ul>
+                <li><a>Gérer</a></li>
+              </ul>
+            </details>
+          </li>
+          <li>
+            <details>
+              <summary>
+                <UsersRoundIcon className="size-5"/>
+                Clients
+              </summary>
+              <ul>
+                <li><a>TODO</a></li>
+              </ul>
+            </details>
+          </li>
+          <li>
+            <details>
+              <summary>
+                <PackageIcon className="size-5"/>
+                Stocks
+              </summary>
+              <ul>
+                <li><a>TODO</a></li>
+              </ul>
+            </details>
+          </li>
+          <li>
+            <details>
+              <summary>
+                <TruckIcon className="size-5"/>
+                Commandes
+              </summary>
+              <ul>
+                <li><a>TODO</a></li>
+              </ul>
+            </details>
+          </li>
+          <li>
+            <details>
+              <summary>
+                <MonitorIcon className="size-5"/>
+                Caisses
+              </summary>
+              <ul>
+                <li><a>TODO</a></li>
+              </ul>
+            </details>
+          </li>
+          <li>
+            <details>
+              <summary>
+                <ChartColumnIcon className="size-5"/>
+                Statistiques
+              </summary>
+              <ul>
+                <li><a>TODO</a></li>
+              </ul>
+            </details>
+          </li>
+          <li>
+            <details>
+              <summary>
+                <Settings2Icon className="size-5"/>
+                Paramètres
+              </summary>
+              <ul>
+                <li><a>TODO</a></li>
+              </ul>
+            </details>
+          </li>
+          <li>
+            <details>
+              <summary>
+                <WrenchIcon className="size-5"/>
+                Outils
+              </summary>
+              <ul>
+                <li><a>TODO</a></li>
+              </ul>
+            </details>
+          </li>
+        </ul>
       </aside>
 
-      <div className="flex flex-col bg-base-100 w-full">
-        {/* <h2 className="px-1 font-bold text-xl mb-4">Création de produit</h2> */}
-          
-        <div className="flex h-full gap-4 p-4">
-          <form className="flex flex-col gap-2 overflow-y-scroll -scroll-m-10 min-w-fit">
-            <fieldset className="h-full fieldset bg-[#fff5e3]/50 border-[#f18a23] rounded-box w-xs border px-4 py-2">
-              <legend className="fieldset-legend text-base text-[#f18a23] px-2">Identification</legend>
-              
-              <label className="fieldset">
-                <span className="label">EAN</span>
-                <input type="text" className="input input-sm uppercase" placeholder="978020137962" />
-              </label>
-
-              <label className="fieldset">
-                <span className="label">Nom du produit</span>
-                <input type="text" className="input input-sm uppercase" placeholder="Jus d'orange" />
-              </label>
-              
-              <label className="fieldset">
-                <span className="label">Nom du produit (étiquette)</span>
-                <input type="text" className="input input-sm uppercase" placeholder="Jus d'orange 1l" />
-              </label>
-            </fieldset>
-
-            <fieldset className="h-full fieldset bg-[#fff5e3]/50 border-[#f18a23] rounded-box w-xs border px-4 py-2">
-              <legend className="fieldset-legend text-base text-[#f18a23] px-2">Catégorisation</legend>
-              
-              <label className="fieldset">
-                  <span className="label">Catégorie</span>
-                  <select
-                    className="select select-sm"
-                    value={category}
-                    onChange={(e) => {
-                      setCategory(parseInt(e.target.value));
-                      setSubCategory(0);
-                    }}
-                  >
-                    <option value={0} disabled>Sélectionnez la catégorie</option>
-                    
-                    {categoriesData.category.map((c) => (
-                      <option key={c.id} value={c.id}>{c.name}</option>
-                    ))}
-                  </select>
-                </label>
-
-                <label className="fieldset">
-                  <span className="label">Sous-catégorie</span>
-                  <select
-                    className="select select-sm"
-                    disabled={category === 0}
-                    value={subCategory}
-                    onChange={(e) => setSubCategory(parseInt(e.target.value))}
-                  >
-                    <option value={0} disabled>Sélectionnez la sous-catégorie</option>
-                    
-                    {getSubCategories()?.items.map((c) => (
-                      <option key={c.id} value={c.id}>{c.name}</option>
-                    ))}
-                  </select>
-                </label>
-
-                <label className="fieldset">
-                  <span className="label">Sous-sous-catégorie</span>
-                  <select
-                    className="select select-sm"
-                    value={subSubCategory}
-                    disabled={subCategory === 0 || category === 0}
-                    onChange={(e) => setSubSubCategory(parseInt(e.target.value))}
-                  >
-                    <option disabled selected>Sélectionnez la Sous-sous-catégorie</option>
-
-                    {getSubSubCategories()?.items.map((c) => (
-                      <option key={c.id} value={c.id}>{c.name}</option>
-                    ))}
-                  </select>
-                </label>
-            </fieldset>
-
-            <fieldset className="h-full fieldset bg-[#fff5e3]/50 border-[#f18a23] rounded-box w-xs border px-4 py-2">
-              <legend className="fieldset-legend text-base text-[#f18a23] px-2">Fournisseur</legend>
-              
-              <label className="fieldset">
-                <span className="label">Fournisseur</span>
-                <select className="select select-sm">
-                  <option disabled selected>Sélectionnez le fournisseur</option>
-                  <option>Markal</option>
-                  <option>Senfas</option>
-                  <option>Ekibio</option>
-                  <option>Tera Viva</option>
-                  <option>HBO</option>
-                </select>
-              </label>
-
-              <label className="fieldset">
-                <span className="label">Marque</span>
-                <select className="select select-sm">
-                  <option disabled selected>Sélectionnez la marque</option>
-                  <option>Luce</option>
-                  <option>Priméal</option>
-                  <option>Quintesens</option>
-                  <option>Philia</option>
-                  <option>Natur'avenir</option>
-                </select>
-              </label>
-
-              <label className="fieldset">
-                <span className="label">Référence</span>
-                <input type="text" className="input input-sm uppercase" placeholder="1902555" />
-              </label>
-            </fieldset>
-          </form>
-
-          <div className="w-full h-full pt-4">
-            <div className="h-full tabs tabs-lift">
-              <input type="radio" name="my_tabs_3" className="tab" aria-label="Prix" defaultChecked/>
-              <div className="h-full tab-content bg-base-100 border-base-300 p-6">TODO : Définition de la TVA, des prix d'achat, des remises, de vente, promotions, etc</div>
-
-              <input type="radio" name="my_tabs_3" className="tab" aria-label="Stock"/>
-              <div className="h-full tab-content bg-base-100 border-base-300 p-6">TODO : Définition du colisage, du seuil d'alerte stocks et du grammage du produit etc</div>
-
-              <input type="radio" name="my_tabs_3" className="tab" aria-label="Étiquette"/>
-              <div className="h-full tab-content bg-base-100 border-base-300 p-6">TODO : Définition du layout de préférence de l'étiquette pour impression auto.</div>
-
-              <input type="radio" name="my_tabs_3" className="tab" aria-label="Stats"/>
-              <div className="h-full tab-content bg-base-100 border-base-300 p-6">TODO : Visualiser les performances de ventes du produits, les mouvements de stocks, etc</div>
-
-              <input type="radio" name="my_tabs_3" className="tab" aria-label="Drive" />
-              <div className="h-full tab-content bg-base-100 border-base-300 p-6">TODO : Ajouter les informations produits pour le drive : photos, descriptions, allergènes, etc</div>
-
-              <input type="radio" name="my_tabs_3" className="tab" aria-label="Paramètres"/>
-              <div className="h-full tab-content bg-base-100 border-base-300 p-6">TODO : Définir les paramètres de ventes du produit et la gestion des remises.</div>
+      <main className="flex flex-col w-full">
+        <header className="flex items-center p-4 px-8 border-b border-b-base-300 h-20">
+          <div className="join w-full">
+            <div className="w-full">
+              <div className="w-full">
+                <input className="input join-item w-full" placeholder="Recherche rapide d'articles ..." />
+              </div>
             </div>
+
+            <select className="select join-item">
+              <option selected>Code</option>
+              <option>Référence</option>
+            </select>
+
+            <button className="btn join-item">Chercher</button>
+          </div>
+        </header>
+
+        <div className="flex p-6 gap-6 w-full">
+          <div className="flex flex-col gap-4">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+
+                const fd = new FormData(e.currentTarget);
+
+                fetch(`http://127.0.0.1:3000/api/products/${fd.get('code')}`).then((r) => r.json()).then((d) => setSearchedProduct(d.product));
+              }}
+            >
+              <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
+                <label className="label">Code</label>
+                <input className="input" name="code" type="text" placeholder="Scannez pour trouver" />
+              </fieldset>
+            </form>
+
+            <form className="flex flex-col gap-4">
+              <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4" disabled={!searchedProduct}>
+                <label className="label">Désignation</label>
+                <input value={searchedProduct ? searchedProduct.title : null} className="input" type="text" placeholder="Jus d'orange 1L ..." />
+                
+                <label className="label">Libellé de vente</label>
+                <input value={searchedProduct ? searchedProduct.title : null} type="text" className="input" placeholder="Jus d'orange grèce 1L ..." />
+              </fieldset>
+
+              <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4" disabled={!searchedProduct}>
+                <label className="label">Rayon</label>
+                <select className="select">
+                  <option disabled selected>Sélectionnez un rayon</option>
+                </select>
+
+                <label className="label">Gamme</label>
+                <select className="select">
+                  <option disabled selected>Sélectionnez une gamme</option>
+                </select>
+
+                <label className="label">Type</label>
+                <select className="select">
+                  <option disabled selected>Sélectionnez un type</option>
+                </select>
+              </fieldset>
+
+              <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4" disabled={!searchedProduct}>
+                <label className="label">Fournisseur</label>
+                <select className="select">
+                  <option disabled selected>Sélectionnez un fournisseur</option>
+                </select>
+
+                <label className="label">Marque</label>
+                <select className="select">
+                  <option disabled selected>Sélectionnez une marque</option>
+                </select>
+
+                <label className="label">Référence</label>
+                <input type="text" className="input" placeholder="123456789"/>
+              </fieldset>
+            </form>
+          </div>
+
+          <div className="tabs tabs-lift w-full">
+            <input className="tab" type="radio" name="my_tabs_3" aria-label="Prix" defaultChecked/>
+            <form className="tab-content bg-base-100 border-base-300 p-6">
+              <h2>Paramètrage des prix</h2>
+            </form>
+
+            <input className="tab" type="radio" name="my_tabs_3" aria-label="Stock"/>
+            <form className="tab-content bg-base-100 border-base-300 p-6">
+              <h2>Paramètrage des conditions de stockage</h2>
+            </form>
+
+            <input className="tab" type="radio" name="my_tabs_3" aria-label="Étiquette"/>
+            <form className="tab-content bg-base-100 border-base-300 p-6">
+              <h2>Paramètrage de l'étiquette</h2>
+            </form>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
