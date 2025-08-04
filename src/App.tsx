@@ -1,9 +1,14 @@
-import { BarcodeIcon, ChartColumnIcon, MonitorIcon, PackageIcon, Settings2Icon, TruckIcon, UsersRoundIcon, WrenchIcon } from "lucide-react";
-import { useState } from "react";
+import { BarcodeIcon, ChartColumnIcon, MonitorIcon, PackageIcon, SaveIcon, Settings2Icon, TruckIcon, UsersRoundIcon, WrenchIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function App()
 {
   const [searchedProduct, setSearchedProduct] = useState<any>(null);
+  const [productCategories, setProductCategories] = useState<any>(null);
+
+  useEffect(() => {
+    fetch(`http://127.0.0.1:3000/api/categories`).then((r) => r.json()).then((d) => setProductCategories(d.categories));
+  }, []);
 
   return(
     <div className="h-screen flex">
@@ -124,6 +129,12 @@ export default function App()
 
         <div className="flex p-6 gap-6 w-full">
           <div className="flex flex-col gap-4">
+            <div className="toast">
+              <button className="alert alert-warning cursor-pointer">
+                <SaveIcon className="size-5"/>
+                <span>Enregistrer les changements</span>
+              </button>
+            </div>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -152,6 +163,10 @@ export default function App()
                 <label className="label">Rayon</label>
                 <select className="select">
                   <option disabled selected>Sélectionnez un rayon</option>
+
+                  {productCategories ? productCategories.map((pc) => (
+                    <option key={pc.id} value={pc.id}>{pc.name}</option>
+                  )) : null}
                 </select>
 
                 <label className="label">Gamme</label>
