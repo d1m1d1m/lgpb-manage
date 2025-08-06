@@ -125,8 +125,8 @@ export default function Sidebar()
           </div>
         </div>
         <div className="flex flex-col w-full">
-          <span className="text-xs">THOREAU Amélie</span>
-          <span className="text-xs">commandes.lgpbloches@gmail.com</span>
+          <span className="text-xs font-bold">AHSSBAHSD Aosdisdj</span>
+          <span className="text-xs">xxaddada.iodhjfhdf@example.com</span>
         </div>
       </footer>
     </aside>
